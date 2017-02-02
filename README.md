@@ -2,7 +2,7 @@
 sass mixin to generate checkbox and radio buttons from a minumim template
 
 
- //    Based on Ryan Seddon's solution --> http://www.thecssninja.com/css/custom-inputs-using-css
+ Based on Ryan Seddon's solution --> http://www.thecssninja.com/css/custom-inputs-using-css
  //    * works with ie9+ with graceful degradation in previous browser
  //
  //    @params !WARNING USE UNESCAPED STRINGS
