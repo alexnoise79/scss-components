@@ -1,0 +1,184 @@
+@mixin components($type, $dim, $unchecked, $checked, $unchecked-hover, $checked-hover, $unchecked-disabled, $checked-disabled, $unchecked-active: "", $checked-active: "", $indeterminate: "") {
+  //    Based on Ryan Seddon's solution --> http://www.thecssninja.com/css/custom-inputs-using-css
+  //    * works with ie9+ with graceful degradation in previous browser
+  //
+  //    @params !WARNING USE UNESCAPED STRINGS
+  //    * $type could be checkbox or radio
+  //    * $dim the dimension (square) of the component
+  //
+  //    * IMAGES (without extension)
+  //    * $unchecked            the default state
+  //    * $checked              checked state
+  //    * $unchecked-hover                hovered image
+  //    * $unchecked-disabled   disabled unchecked image
+  //    * $checked-disabled     disabled checkd image
+  //    * [$unchecked-active]   OPTIONAL unchecked active image
+  //    * [$checked-active]     OPTIONAL checked active
+  //    * [$indeterminate]      OPTIONAL only for checkbox three state image
+  //
+  //    * MINIMAL TEMPLATE
+  //    * <span class="cb || rb"><input id type="$type"/><label for></label></span>
+
+
+  @if($type == 'checkbox'){
+    .cb {
+      position: relative;
+      width: $dim;
+      height: $dim;
+      display: inline-block;
+      vertical-align: top;
+      +label[for]{
+        cursor: pointer;
+        @include user-select(none);
+      }
+
+    }
+  } @else {
+    .rb {
+      position: relative;
+      width: $dim;
+      height: $dim;
+      display: inline-block;
+      vertical-align: top;
+      +label[for]{
+        cursor: pointer;
+        @include user-select(none);
+      }
+    }
+  }
+
+  :root .cb,
+  :root .rb {
+    input[type=#{$type}] {
+      padding: 0;
+      margin: 0;
+      height: $dim;
+      width: $dim;
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+
+      + label {
+        padding-left: $dim;
+        background: transparent url($unchecked) no-repeat center/$dim;
+        height: $dim;
+        width: $dim;
+        margin: 0;
+        display: inline-block;
+        position: relative;
+        z-index: 1;
+
+        &[for]{
+          cursor: pointer;
+          @include user-select(none);
+        }
+        &:hover {
+          background-image: url($unchecked-hover);
+          @if $unchecked-active != ""{
+            &:active {
+              background-image: url($unchecked-active);
+            }
+          }
+        }
+      }
+
+      &:checked {
+        + label {
+          background-image: url($checked);
+          @if $checked-active != ""{
+            &:hover {
+              &:active {
+                background-image: url($checked-active);
+              }
+            }
+          }
+          &:hover {
+            background-image: url($checked-active);
+          }
+        }
+
+      }
+
+      &:hover{
+        +label {
+          background-image: url($unchecked-hover);
+        }
+        &:checked {
+          + label {
+            background-image: url($checked-hover);
+          }
+        }
+        &:disabled {
+          + label {
+            background-image: url($unchecked-disabled);
+          }
+          &:checked {
+            + label {
+              background-image: url($checked-disabled);
+            }
+          }
+        }
+      }
+
+      &:focus {
+        +label {
+          background-image: url($unchecked-hover);
+          opacity: 0.75;
+        }
+        &:checked {
+          + label {
+            background-image: url($checked-hover);
+            opacity: 0.75;
+          }
+        }
+      }
+
+      &:active {
+        @if $unchecked-active != ""{
+          + label {
+            background-image: url($unchecked-active);
+          }
+        }
+        @if $checked-active != ""{
+          &:checked {
+            + label {
+              background-image: url($checked-active);
+            }
+          }
+        }
+      }
+
+      &:disabled {
+        + label {
+          background-image: url($unchecked-disabled);
+          &:hover {
+            background-image: url($unchecked-disabled);
+            &:active {
+              background-image: url($unchecked-disabled);
+            }
+          }
+        }
+        &:checked {
+          + label {
+            background-image: url($checked-disabled);
+            &:hover {
+              background-image: url($checked-disabled);
+              &:active {
+                background-image: url($checked-disabled);
+              }
+            }
+          }
+        }
+      }
+
+      @if($type == 'checkbox' and $indeterminate !=""){
+        &:indeterminate {
+          + label {
+            background-image: url($indeterminate);
+          }
+        }
+      }
+
+    }
+  }
+}
